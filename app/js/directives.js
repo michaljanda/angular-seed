@@ -38,20 +38,22 @@ angular.module('myApp.directives', []).
         link: link
       };
     })
-    .directive('writeTable', function () {
+    .directive('writeTable', function (exampleData) {
 
-      function link(scope, element, attrs) {
+      function link(scope, element, attrs, exampleData) {
         scope.$watch(attrs.rows, function (value) {
           scope.rows = value;
         });
+
       }
 
       return {
         link: link,
         templateUrl: 'partials/directives/simple-table.html',
-        controller: function ($scope, $http) {
-          $http.get('mockdata/example.json').success(function (data) {
-            $scope.data = data;
+        controller: function ($scope, $http, exampleData) {
+
+          exampleData().then(function(data) {
+            $scope.data = data.data;
           });
         }
       };
